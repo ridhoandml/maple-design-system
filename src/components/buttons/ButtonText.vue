@@ -1,7 +1,5 @@
 <script setup lang="ts">
-type typeButton = 'fill' | 'outline' | 'flat';
-type sizeButton = 'x-small' | 'small' | 'normal' | 'large' | 'x-large';
-type styleButton = 'teal' | 'blue' | 'red' | 'green' | 'yellow';
+import type { typeButton, sizeButton, styleButton } from '@/utils/TypesComponent';
 
 interface IButtonProps {
   label?: string;
@@ -40,10 +38,10 @@ const classList = classGenerator();
 <template>
   <button :class="classList" @click="emits.click">
     <div class="button__content">
-      <i v-if="props.leftIcon" :class="`bx bxl-${props.leftIcon}`"></i>
+      <i v-if="props.leftIcon" :class="`${props.leftIcon}`"></i>
       <span v-if="props.label">{{ props.label }}</span>
       <span v-else><slot></slot></span>
-      <i v-if="props.rightIcon" :class="`bx bxl-${props.rightIcon}`"></i>
+      <i v-if="props.rightIcon" :class="`${props.rightIcon}`"></i>
     </div>
   </button>
 </template>
