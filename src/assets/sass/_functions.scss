@@ -5,3 +5,7 @@
 @function shade-color($color, $percentage) {
   @return mix(black, $color, $percentage);
 }
+
+@function opacity-color($color, $value) {
+  @return transparentize($color, $value);
+}
