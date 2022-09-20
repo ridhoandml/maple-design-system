@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import ButtonText from '@/components/ButtonText.vue';
+import ButtonText from '@/components/buttons/ButtonText.vue';
 </script>
 
 <template>
   <div class="center">
     <ButtonText>Ini Slot</ButtonText>
-    <ButtonText name-right-icon="mongodb" style-button="blue" type-button="fill">Blue Flat</ButtonText>
+    <ButtonText right-icon="mongodb" color="blue" type="fill"> Fill</ButtonText>
+    <ButtonText right-icon="mongodb" color="blue" type="outline">Outline</ButtonText>
+    <ButtonText right-icon="mongodb" color="blue" type="flat"> Flat</ButtonText>
   </div>
 </template>
 
