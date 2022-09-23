@@ -1,30 +1,32 @@
 <script setup lang="ts">
-import type { typeButton, sizeButton, styleButton } from '@/utils/TypesComponent';
+import type { TypeButton, SizeButton, ColorButton, ShapeButton } from '@/utils/TypesComponent';
 
 interface IButtonProps {
   icon?: string;
-  type?: typeButton;
-  size?: sizeButton;
-  color?: styleButton;
+  type?: TypeButton;
+  size?: SizeButton;
+  color?: ColorButton;
+  shape?: ShapeButton;
 }
 
 const props = defineProps<IButtonProps>();
 const emits = defineEmits(['onClick']);
 
 const icon = props.icon == null || props.icon == ''.trim() ? 'bx bxs-bell' : props.icon;
+const color = props.color == null ? 'teal' : props.color;
+const size = props.size == null ? 'normal' : props.size;
+const type = props.type == null ? 'fill' : props.type;
+const shape = props.shape == null ? 'rectangle' : props.shape;
 
 const classGenerator = (): string => {
   const prefix = `button`;
   let arrayClass: string[] = [];
 
   arrayClass.push(`${prefix}`);
-  arrayClass.push(props.size == null ? `${prefix}--normal` : `${prefix}--${props.size}`);
+  arrayClass.push(props.size == null ? `${prefix}--normal` : `${prefix}--${size}`);
+  arrayClass.push(`${prefix}--${color}-${type}`);
+  arrayClass.push(`${prefix}--${shape}`);
 
-  if (props.color == null || props.type == null) {
-    arrayClass.push(`${prefix}--teal-fill`);
-  } else {
-    arrayClass.push(`${prefix}--${props.color}-${props.type}`);
-  }
   return arrayClass.join(' ');
 };
 
@@ -125,7 +127,7 @@ const classList = classGenerator();
   transition: all 200ms ease-in-out;
 
   // Size x-small
-  @include size-class('x-small', $font-size-12, $font-weight-700, $line-height-150, $space-8, $space-2, $border-1);
+  @include size-class('x-small', $font-size-12, $font-weight-700, $line-height-150, $space-4, $space-2, $border-1);
   // Size small
   @include size-class('small', $font-size-14, $font-weight-700, $line-height-150, $space-8, $space-2, $border-2);
   // Size normal
@@ -145,6 +147,10 @@ const classList = classGenerator();
   @include style-class('red', $white, $red-500, $red-600, $red-700, $red-300);
   // Style yellow
   @include style-class('yellow', $white, $yellow-500, $yellow-600, $yellow-700, $yellow-300);
+
+  &--round {
+    border-radius: $border-rounded;
+  }
 
   &__content {
     display: flex;
