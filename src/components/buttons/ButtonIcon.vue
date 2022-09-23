@@ -8,12 +8,8 @@ interface IButtonProps {
   color?: styleButton;
 }
 
-interface IButtonEmits {
-  click?: string;
-}
-
 const props = defineProps<IButtonProps>();
-const emits = defineEmits<IButtonEmits>();
+const emits = defineEmits(['onClick']);
 
 const icon = props.icon == null || props.icon == ''.trim() ? 'bx bxs-bell' : props.icon;
 
@@ -36,7 +32,7 @@ const classList = classGenerator();
 </script>
 
 <template>
-  <button :class="classList" @click="emits.click">
+  <button :class="classList" @click="emits('onClick')">
     <div class="button__content">
       <i :class="`bx ${icon}`"></i>
     </div>
