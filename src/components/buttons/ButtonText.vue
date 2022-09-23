@@ -1,34 +1,31 @@
 <script setup lang="ts">
-import type { typeButton, sizeButton, styleButton } from '@/utils/TypesComponent';
+import type { TypeButton, SizeButton, ColorButton } from '@/utils/TypesComponent';
 
 interface IButtonProps {
   label?: string;
-  type?: typeButton;
-  size?: sizeButton;
-  color?: styleButton;
+  type?: TypeButton;
+  size?: SizeButton;
+  color?: ColorButton;
   leftIcon?: string;
   rightIcon?: string;
 }
 
-interface IButtonEmits {
-  click?: string;
-}
-
 const props = defineProps<IButtonProps>();
-const emits = defineEmits<IButtonEmits>();
+const emits = defineEmits(['onClick']);
+
+const label = props.label == null ? 'Button' : props.label;
+const color = props.color == null ? 'teal' : props.color;
+const size = props.size == null ? 'normal' : props.size;
+const type = props.type == null ? 'fill' : props.type;
 
 const classGenerator = (): string => {
   const prefix = `button`;
   let arrayClass: string[] = [];
 
   arrayClass.push(`${prefix}`);
-  arrayClass.push(props.size == null ? `${prefix}--normal` : `${prefix}--${props.size}`);
+  arrayClass.push(props.size == null ? `${prefix}--normal` : `${prefix}--${size}`);
+  arrayClass.push(`${prefix}--${color}-${type}`);
 
-  if (props.color == null || props.type == null) {
-    arrayClass.push(`${prefix}--teal-fill`);
-  } else {
-    arrayClass.push(`${prefix}--${props.color}-${props.type}`);
-  }
   return arrayClass.join(' ');
 };
 
@@ -36,11 +33,10 @@ const classList = classGenerator();
 </script>
 
 <template>
-  <button :class="classList" @click="emits.click">
+  <button :class="classList" @click="emits('onClick')">
     <div class="button__content">
       <i v-if="props.leftIcon" :class="`${props.leftIcon}`"></i>
-      <span v-if="props.label">{{ props.label }}</span>
-      <span v-else><slot></slot></span>
+      <span>{{ label }}</span>
       <i v-if="props.rightIcon" :class="`${props.rightIcon}`"></i>
     </div>
   </button>
@@ -49,11 +45,9 @@ const classList = classGenerator();
 <style scoped lang="scss">
 @import '../../assets/sass/index.scss';
 
-@mixin size-class($size, $font-size, $font-weight, $line-height, $x-padding, $y-padding, $border-radius, $border-width) {
+@mixin size-class($size, $font-size, $line-height, $x-padding, $y-padding, $border-radius, $border-width) {
   &--#{$size} {
-    font-size: $font-size;
-    font-weight: $font-weight;
-    line-height: $line-height;
+    font-size: $font-size $line-height;
     padding: $y-padding $x-padding;
     border-radius: $border-radius;
     outline-style: $border-solid;
@@ -132,15 +126,15 @@ const classList = classGenerator();
   transition: all 200ms ease-in-out;
 
   // Size x-small
-  @include size-class('x-small', $font-size-12, $font-weight-700, $line-height-150, $space-8, $space-4, $space-2, $border-1);
+  @include size-class('x-small', $font-size-12, $line-height-150, $space-4, $space-2, $space-2, $border-1);
   // Size small
-  @include size-class('small', $font-size-14, $font-weight-700, $line-height-150, $space-8, $space-4, $space-2, $border-2);
+  @include size-class('small', $font-size-14, $line-height-150, $space-8, $space-4, $space-2, $border-2);
   // Size normal
-  @include size-class('normal', $font-size-16, $font-weight-700, $line-height-140, $space-12, $space-6, $space-4, $border-3);
+  @include size-class('normal', $font-size-16, $line-height-140, $space-12, $space-6, $space-4, $border-3);
   // Size large
-  @include size-class('large', $font-size-18, $font-weight-700, $line-height-140, $space-16, $space-8, $space-6, $border-4);
+  @include size-class('large', $font-size-18, $line-height-140, $space-16, $space-8, $space-6, $border-4);
   // Size x-large
-  @include size-class('x-large', $font-size-20, $font-weight-700, $line-height-140, $space-20, $space-12, $space-6, $border-5);
+  @include size-class('x-large', $font-size-20, $line-height-140, $space-20, $space-12, $space-6, $border-5);
 
   // Style teal
   @include style-class('teal', $white, $teal-500, $teal-600, $teal-700, $teal-300);
@@ -157,6 +151,7 @@ const classList = classGenerator();
     display: flex;
     flex-direction: row;
     align-items: center;
+    gap: 0.5rem;
   }
 }
 </style>
