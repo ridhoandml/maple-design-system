@@ -6,4 +6,10 @@ export const parameters = {
       date: /Date$/,
     },
   },
-}
+  layout: 'centered',
+  options: {
+    storySort: {
+      order: ['Introduction', ['About Design System', '*'], 'Atoms', ['*'],],
+    },
+  },
+};
